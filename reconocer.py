@@ -1,8 +1,9 @@
 import cv2
 import numpy as np
 #obtenemos la imagen
-img = cv2.resize(cv2.imread('./imagenes/IMG_20201125_162936.jpg'),(600,600), interpolation=cv2.INTER_CUBIC)
-#img = cv2.imread('./imagenes/IMG_20201125_102237.jpg')
+#img = cv2.resize(cv2.imread('./imagenes/IMG_20201125_134821.jpg'),(600,700), interpolation=cv2.INTER_CUBIC)
+
+img = cv2.imread('./imagenes/impresion_mancha.jpg')
 #kernel2 = np.ones((1,1), np.uint8)
 kernel = np.array([[-1,-1,-1], [-1,9,-1], [-1,-1,-1]], np.float32)
 kernel2 = np.ones((1,1), np.uint8)
@@ -25,7 +26,7 @@ mask = cv2.bitwise_not(mask)
 mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel2)
 mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel2)
 
-mask = cv2.medianBlur(mask,11)
+mask = cv2.medianBlur(mask, 21)
 #inv_mask = cv2.bitwise_not(mask)
 # Find Canny edges 
 #mask = cv2.Canny(mask, 30, 200) 
@@ -33,10 +34,10 @@ mask = cv2.medianBlur(mask,11)
 cv2.drawContours(mask, contours, -1, (0, 255, 0), 3)  """
 
 _,contours,_ = cv2.findContours(mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-cv2.drawContours(mask, contours, -1, (0,255,0), 2)
-
-print("Numero de manchas = " + str(len(contours))) 
-cv2.imshow("mask", mask)
+cv2.drawContours(img, contours, -1, (0,255,0), 3)
+contornos = len(contours)
+print("Numero de manchas = " + str(contornos - 1))
+""" cv2.imshow("mask", mask) """
 cv2.imshow("img_sharpen_hsv", img)
 
 k = cv2.waitKey(0) & 0xFF
